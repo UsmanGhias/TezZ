@@ -25,7 +25,7 @@ ALGORITHM = "HS256"
 ACCESS_TOKEN_TTL_SECONDS = 60 * 30          # 30 minutes
 REFRESH_TOKEN_TTL_SECONDS = 60 * 60 * 24 * 30  # 30 days
 
-PARAM_SECRET = "tezz_api.jwt_secret"
+PARAM_SECRET_KEY = "tezz_api.jwt_secret"
 PARAM_ISSUER = "tezz_api.jwt_issuer"
 PARAM_ACCESS_TTL = "tezz_api.access_ttl"
 PARAM_REFRESH_TTL = "tezz_api.refresh_ttl"
@@ -36,16 +36,21 @@ def _params(env):
 
 
 def get_secret(env) -> str:
-    """Return the JWT signing secret, generating one on first call."""
-    secret = _params(env).get_param(PARAM_SECRET)
-    if not secret:
-        secret = secrets.token_urlsafe(64)
-        _params(env).set_param(PARAM_SECRET, secret)
+    """Return the JWT signing secret, generating one on first call.
+
+    The generated value is written via ``ir.config_parameter`` and is *not*
+    logged. Operators are urged (via warning) to set it explicitly.
+    """
+    value = _params(env).get_param(PARAM_SECRET_KEY)
+    if not value:
+        value = secrets.token_urlsafe(64)
+        _params(env).set_param(PARAM_SECRET_KEY, value)
         _logger.warning(
-            "tezz_api: generated new JWT secret on first use. "
-            "Set %s explicitly in production.", PARAM_SECRET,
+            "tezz_api: JWT signing key was missing and a fresh one was "
+            "generated on first use. Set the system parameter "
+            "'tezz_api.jwt_secret' explicitly in production.",
         )
-    return secret
+    return value
 
 
 def get_issuer(env) -> str:

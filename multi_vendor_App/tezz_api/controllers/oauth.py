@@ -70,7 +70,5 @@ class TezzOAuth(TezzController):
         env = request.env(su=True)
         user = _upsert_user(env, profile)
         role = _resolve_role(user)
-        from .main import ok  # local import to avoid cycle
-        # noqa above is ok — just keeping the import local.
-        from ..utils.envelope import ok as ok_env
-        return ok_env(_token_pair(env, user, role=role, request_meta=_request_meta()))
+        from ..utils.envelope import ok
+        return ok(_token_pair(env, user, role=role, request_meta=_request_meta()))

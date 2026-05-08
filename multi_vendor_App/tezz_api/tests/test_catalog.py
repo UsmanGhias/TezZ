@@ -25,7 +25,7 @@ class TestCatalog(HttpCase):
         self.assertEqual(meta["page_size"], 5)
         self.assertIn("total", meta)
 
-    def test_search_requires_query(self):
+    def test_search_query_too_short(self):
         r = self.url_open("/api/v1/products/search?q=a")
         self.assertEqual(r.status_code, 400)
 

@@ -106,11 +106,10 @@ def tezz_jwt_required(role: str | Iterable[str] | None = None,
                 return fail(ErrorCode.UNAUTHORIZED, "User no longer exists")
 
             actual_role = _resolve_role(su_env, user)
-            if required and actual_role not in required and ROLE_ADMIN not in (actual_role,):
-                # Admins implicitly satisfy any role requirement.
-                if actual_role != ROLE_ADMIN:
-                    return fail(ErrorCode.FORBIDDEN,
-                                f"Requires role {required!r}, have {actual_role!r}")
+            # Admins implicitly satisfy any role requirement.
+            if required and actual_role not in required and actual_role != ROLE_ADMIN:
+                return fail(ErrorCode.FORBIDDEN,
+                            f"Requires role {required!r}, have {actual_role!r}")
 
             # Re-bind request.env to the authenticated user.
             request.update_env(user=user.id)
