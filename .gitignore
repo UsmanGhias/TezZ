@@ -1,0 +1,14 @@
+.env
+.env.prod
+*.pyc
+__pycache__/
+.DS_Store
+*.log
+teez_flutter/build/
+teez_flutter/.dart_tool/
+teez_mobile_app/app/build/
+teez_mobile_app/build/
+teez_mobile_app/.gradle/
+*.apk
+*.tar.gz
+*.dill

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="32dp"
+    android:background="@color/splashBackground">
+
+    <!-- App Logo / Brand Name -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Teez"
+        android:textSize="56sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"
+        android:letterSpacing="0.1"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Multi-Vendor Store"
+        android:textSize="16sp"
+        android:textColor="@color/colorTextSecondary"
+        android:layout_marginBottom="60dp" />
+
+    <!-- Login Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnLogin"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="Login"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        android:layout_marginBottom="12dp"
+        style="@style/Widget.MaterialComponents.Button" />
+
+    <!-- Sign Up Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSignup"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="Create Account"
+        android:textSize="16sp"
+        android:layout_marginBottom="24dp"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+    <!-- Browse as Guest -->
+    <TextView
+        android:id="@+id/btnGuest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Browse as Guest →"
+        android:textSize="14sp"
+        android:textColor="@color/colorPrimary"
+        android:padding="8dp"
+        android:clickable="true"
+        android:focusable="true" />
+
+</LinearLayout>

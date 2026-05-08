@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+
+<t t-inherit="mail.MessagingMenu" t-inherit-mode="extension">
+  <xpath expr="//Dropdown" position="replace">
+  <t t-if="state.seller">
+    <Dropdown t-if="!env.inDiscussApp" autoOpen="false" beforeOpen.bind="beforeOpen" onStateChanged="state => this.state.isOpen = state.open" position="'bottom-end'" menuClass="`p-0 ${ ui.isSmall ? 'o-mail-systrayFullscreenDropdownMenu start-0 w-100 mh-100 d-flex flex-column m-0' : ''}`">
+        <t t-set-slot="toggler">
+            <i class="fa fa-lg fa-comments" role="img" aria-label="Messages" t-on-click="() => store.discuss.activeTab = ui.isSmall and store.discuss.activeTab === 'mailbox' ? 'all' : store.discuss.activeTab"></i>
+            <span t-if="counter" class="o-mail-MessagingMenu-counter badge rounded-pill"><t t-esc="counter"/></span>
+        </t>
+        <t t-set-slot="default">
+            <t t-call="mail.MessagingMenu.content"/>
+        </t>
+    </Dropdown>
+    <t t-else="" t-call="mail.MessagingMenu.content"/>
+  </t>
+  <t t-if="!seller">
+    <span></span>
+  </t>
+</xpath>
+
+</t>
+<t t-inherit="mail.ActivityMenu" t-inherit-mode="extension">
+  <xpath expr="//Dropdown" position="attributes">
+    <attribute name="t-if">seller_info.seller</attribute>
+</xpath>
+</t>
+
+<t t-inherit="web.DebugMenu" t-inherit-mode="extension">
+  <xpath expr="//Dropdown" position="attributes">
+    <attribute name="t-if">state.seller</attribute>
+</xpath>
+</t>
+
+<!-- <t t-inherit="mail.MessagingMenu.content" t-inherit-mode="extension">
+  <xpath expr="//hasclass('o-mail-MessagingMenu')"  position="inside">
+    <span >test</span>
+  </xpath>
+</t> -->
+
+
+  <!-- <t t-inherit="mail.MessagingMenu" t-inherit-mode="extension">
+    <xpath expr="//Dropdown/t/i" position="attributes">
+      <t t-if="request.env.user.partner_id.seller">
+      <attribute name="class" add="d-none"/>
+     </t>
+    </xpath>
+    <xpath expr="//Dropdown/t/span" position="attributes">
+      <t t-if="request.env.user.has_group('odoo_marketplace.marketplace_seller_group')">
+      <attribute name="style" add="display:none;"/>
+    </t>
+    </xpath>
+  </t>
+
+   <t t-inherit="mail.MessagingMenu.content" t-inherit-mode="extension">
+    <xpath expr="//div[1]" position="attributes">
+      <t t-if="request.env.user.has_group('odoo_marketplace.marketplace_seller_group')">
+      <attribute name="style" add="display:none !important;"/>
+    </t>
+    </xpath>
+  </t> -->
+
+
+
+</templates>

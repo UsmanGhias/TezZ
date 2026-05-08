@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- ── Meta viewport & PWA tags ── -->
+    <template id="teezz_head_meta" inherit_id="website.layout" name="TeZz Head Meta">
+        <xpath expr="//head" position="inside">
+            <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+            <meta name="mobile-web-app-capable" content="yes"/>
+            <meta name="apple-mobile-web-app-capable" content="yes"/>
+            <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+            <meta name="apple-mobile-web-app-title" content="TeZz"/>
+            <meta name="theme-color" content="#1a1a2e"/>
+            <link rel="preconnect" href="https://fonts.googleapis.com"/>
+            <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+        </xpath>
+    </template>
+
+    <!-- Search bar is injected by teezz_mobile.js — no XML override needed -->
+</odoo>

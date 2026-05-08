@@ -1,0 +1,69 @@
+services:
+  db:
+    image: postgres:15
+    container_name: teez_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-odoo}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-odoo_password}
+      POSTGRES_DB: ${POSTGRES_DB:-teez_marketplace}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - teez_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-odoo}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  odoo:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: teez_odoo
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8069:8069"
+      - "8072:8072"   # live chat / longpolling
+    environment:
+      HOST: db
+      PORT: 5432
+      USER: ${POSTGRES_USER:-odoo}
+      PASSWORD: ${POSTGRES_PASSWORD:-odoo_password}
+    volumes:
+      - odoo_data:/var/lib/odoo
+      - ./odoo.conf:/etc/odoo/odoo.conf:ro
+      - ./multi_vendor_App:/mnt/extra-addons:ro
+    networks:
+      - teez_network
+    command: odoo --config=/etc/odoo/odoo.conf
+
+  # Optional: nginx reverse proxy (ready for server deployment)
+  # nginx:
+  #   image: nginx:alpine
+  #   container_name: teez_nginx
+  #   restart: unless-stopped
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+  #     - ./nginx/ssl:/etc/nginx/ssl:ro
+  #   depends_on:
+  #     - odoo
+  #   networks:
+  #     - teez_network
+
+volumes:
+  postgres_data:
+    driver: local
+  odoo_data:
+    driver: local
+
+networks:
+  teez_network:
+    driver: bridge

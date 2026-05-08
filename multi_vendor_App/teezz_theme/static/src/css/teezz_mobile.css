@@ -1,0 +1,796 @@
+/* ═══════════════════════════════════════════════════════════════
+   TeZz Mobile Theme  —  Mobile-first Odoo Website
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Design Tokens ─────────────────────────────────────────────── */
+:root {
+  --tz-bg:        #0f0f14;
+  --tz-surface:   #1a1a2e;
+  --tz-card:      #16213e;
+  --tz-card2:     #0f3460;
+  --tz-accent:    #e94560;
+  --tz-gold:      #f5a623;
+  --tz-text:      #f0f0f0;
+  --tz-muted:     #9e9e9e;
+  --tz-success:   #00c853;
+  --tz-radius:    14px;
+  --tz-nav-h:     62px;
+  --tz-font:      'Poppins', 'Segoe UI', sans-serif;
+}
+
+/* ── Dark Base ──────────────────────────────────────────────────── */
+body {
+  background: var(--tz-bg) !important;
+  color: var(--tz-text) !important;
+  font-family: var(--tz-font) !important;
+  padding-bottom: var(--tz-nav-h) !important;
+}
+
+/* ── Hide desktop clutter on mobile ────────────────────────────── */
+@media (max-width: 768px) {
+  .o_header_standard .top_menu { display: none !important; }
+  header .o_extra_menu_items  { display: none !important; }
+  .oe_website_login_container > .d-none { display: none !important; }
+  footer.o_footer               { display: none !important; }
+  .o_website_edit_btn           { display: none !important; }
+  .oe_search_box                { display: none !important; }
+}
+
+/* ── TeZz Header ────────────────────────────────────────────────── */
+header#top, .o_wsale_header {
+  background: var(--tz-surface) !important;
+  border-bottom: 1px solid rgba(233,69,96,.25) !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1000 !important;
+  padding: 0 16px !important;
+}
+
+.navbar-brand img {
+  filter: brightness(0) invert(1);
+  max-height: 34px;
+}
+
+/* Logo text when no image */
+.navbar-brand::before {
+  content: 'Te';
+  color: var(--tz-text);
+  font-weight: 800;
+  font-size: 22px;
+}
+.navbar-brand::after {
+  content: 'Zz';
+  color: var(--tz-accent);
+  font-weight: 900;
+  font-size: 22px;
+}
+.navbar-brand img { display: none !important; }
+
+/* Show search icon in header */
+.tz-header-search {
+  background: none;
+  border: none;
+  color: var(--tz-text);
+  font-size: 20px;
+  padding: 8px;
+  cursor: pointer;
+}
+
+/* ── Search Bar ─────────────────────────────────────────────────── */
+#tz-search-bar {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1100;
+  background: var(--tz-surface);
+  padding: 10px 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,.5);
+}
+#tz-search-bar.active { display: flex; align-items: center; gap: 10px; }
+#tz-search-input {
+  flex: 1;
+  background: var(--tz-card);
+  border: 1.5px solid var(--tz-accent);
+  border-radius: 10px;
+  color: var(--tz-text);
+  padding: 10px 14px;
+  font-size: 15px;
+  outline: none;
+}
+#tz-search-input::placeholder { color: var(--tz-muted); }
+#tz-search-close {
+  background: none;
+  border: none;
+  color: var(--tz-muted);
+  font-size: 22px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+/* ── Bottom Navigation ──────────────────────────────────────────── */
+#tz-bottom-nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: var(--tz-nav-h);
+  background: var(--tz-surface);
+  border-top: 1px solid rgba(255,255,255,.08);
+  display: flex;
+  align-items: stretch;
+  z-index: 999;
+  box-shadow: 0 -4px 20px rgba(0,0,0,.4);
+}
+.tz-nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none !important;
+  color: var(--tz-muted) !important;
+  font-size: 10px;
+  font-weight: 500;
+  gap: 4px;
+  transition: color .2s;
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+}
+.tz-nav-item svg {
+  width: 22px; height: 22px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.tz-nav-item.active,
+.tz-nav-item:hover {
+  color: var(--tz-accent) !important;
+}
+.tz-nav-item.active svg { stroke: var(--tz-accent); }
+
+/* Cart badge */
+.tz-cart-badge {
+  position: absolute;
+  top: 6px;
+  right: calc(50% - 20px);
+  background: var(--tz-accent);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3px;
+  display: none;
+}
+.tz-cart-badge.visible { display: flex; }
+
+/* ── Hero Banner ─────────────────────────────────────────────────── */
+.tz-hero {
+  background: linear-gradient(135deg, var(--tz-card2) 0%, var(--tz-surface) 100%);
+  padding: 32px 20px 28px;
+  text-align: center;
+}
+.tz-hero h1 {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--tz-text);
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+.tz-hero h1 span { color: var(--tz-accent); }
+.tz-hero p {
+  color: var(--tz-muted);
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+.tz-hero-btn {
+  background: var(--tz-accent);
+  color: #fff !important;
+  padding: 12px 28px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none !important;
+  display: inline-block;
+  box-shadow: 0 6px 20px rgba(233,69,96,.4);
+}
+
+/* ── Category Pills ─────────────────────────────────────────────── */
+.tz-cats {
+  display: flex;
+  overflow-x: auto;
+  gap: 8px;
+  padding: 14px 16px;
+  scrollbar-width: none;
+}
+.tz-cats::-webkit-scrollbar { display: none; }
+.tz-cat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--tz-card);
+  color: var(--tz-muted) !important;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  text-decoration: none !important;
+  border: 1px solid rgba(255,255,255,.08);
+  transition: all .2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.tz-cat-pill:hover,
+.tz-cat-pill.active {
+  background: var(--tz-accent);
+  color: #fff !important;
+  border-color: var(--tz-accent);
+}
+
+/* ── Section Headings ───────────────────────────────────────────── */
+.tz-section-title {
+  padding: 16px 16px 8px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--tz-text);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.tz-section-title a {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--tz-accent) !important;
+  text-decoration: none !important;
+}
+
+/* ── Product Grid ───────────────────────────────────────────────── */
+.o_wsale_products_main_col,
+#products_grid,
+.tz-products {
+  padding: 0 10px 16px !important;
+}
+
+/* Force 2 columns on mobile */
+@media (max-width: 768px) {
+  #products_grid .col-6,
+  .oe_product_cart {  /* Odoo default product wrapper */
+    width: 50% !important;
+    padding: 5px !important;
+  }
+
+  /* Odoo uses these classes */
+  #products_grid .row { margin: 0 -5px !important; }
+}
+
+.tz-product-card,
+.oe_product_cart {
+  background: var(--tz-card) !important;
+  border-radius: var(--tz-radius) !important;
+  overflow: hidden !important;
+  border: none !important;
+  transition: transform .15s, box-shadow .15s !important;
+  -webkit-tap-highlight-color: transparent;
+}
+.tz-product-card:active,
+.oe_product_cart:active {
+  transform: scale(.97) !important;
+}
+
+/* Product image container */
+.tz-product-card .tz-img,
+.oe_product_cart .o_wsale_product_btn {
+  aspect-ratio: 1;
+  background: var(--tz-card2);
+  overflow: hidden;
+}
+.tz-product-card .tz-img img,
+.oe_product_cart img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+}
+
+/* Product info */
+.tz-product-card .tz-info,
+.oe_product_cart .product_price {
+  padding: 10px 10px 12px !important;
+}
+.tz-product-card .tz-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--tz-text);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+.tz-product-card .tz-price,
+.oe_product_cart .oe_currency_value {
+  font-size: 14px !important;
+  font-weight: 800 !important;
+  color: var(--tz-accent) !important;
+}
+
+/* Odoo product name */
+.oe_product_cart .o_wsale_product_information a {
+  color: var(--tz-text) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+}
+
+/* Hide Odoo add-to-cart text on mobile, keep button clean */
+@media (max-width: 768px) {
+  .oe_product_cart .btn_add_cart { 
+    width: 100% !important;
+    border-radius: 0 0 var(--tz-radius) var(--tz-radius) !important;
+    background: var(--tz-accent) !important;
+    color: #fff !important;
+    border: none !important;
+    padding: 9px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+  }
+  .oe_product_cart .a-submit { 
+    background: var(--tz-accent) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 8px !important;
+  }
+}
+
+/* ── Shop Filters ───────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Odoo default aside/filter panel */
+  .o_wsale_offcanvas,
+  #o_wsale_offcanvas_filter { 
+    background: var(--tz-surface) !important;
+    color: var(--tz-text) !important;
+  }
+  .o_wsale_offcanvas .offcanvas-header {
+    background: var(--tz-card) !important;
+    color: var(--tz-text) !important;
+    border-bottom: 1px solid rgba(255,255,255,.08) !important;
+  }
+  
+  /* Price range filter */
+  .form-range { accent-color: var(--tz-accent); }
+
+  /* Sort / filter bar */
+  .o_wsale_products_header {
+    background: var(--tz-surface) !important;
+    padding: 10px 16px !important;
+    display: flex !important;
+    gap: 8px !important;
+    align-items: center !important;
+    border-bottom: 1px solid rgba(255,255,255,.06) !important;
+  }
+  .o_wsale_products_header .btn {
+    background: var(--tz-card) !important;
+    color: var(--tz-text) !important;
+    border: 1px solid rgba(255,255,255,.1) !important;
+    border-radius: 10px !important;
+    font-size: 13px !important;
+    padding: 8px 14px !important;
+  }
+}
+
+/* ── Product Detail Page ────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .o_product_page {
+    background: var(--tz-bg) !important;
+  }
+  
+  /* Product image gallery */
+  .o_carousel, .o_product_page_carousel {
+    border-radius: var(--tz-radius) !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+  }
+  
+  /* Main product image */
+  .o_wsale_product_page .o_carousel .carousel-inner img,
+  .product_detail_img {
+    max-height: 320px !important;
+    object-fit: contain !important;
+    background: var(--tz-card) !important;
+  }
+  
+  /* Product name */
+  .o_product_page h1, 
+  .product_detail_main h1 {
+    font-size: 20px !important;
+    font-weight: 800 !important;
+    color: var(--tz-text) !important;
+  }
+  
+  /* Price */
+  .o_product_page .oe_price .oe_currency_value,
+  .product_detail_main .oe_price {
+    font-size: 24px !important;
+    font-weight: 900 !important;
+    color: var(--tz-accent) !important;
+  }
+  
+  /* Description */
+  .o_product_page .tab-content,
+  .o_product_page .product_description {
+    background: var(--tz-card) !important;
+    border-radius: var(--tz-radius) !important;
+    padding: 16px !important;
+    color: var(--tz-muted) !important;
+    font-size: 13px !important;
+    line-height: 1.7 !important;
+    margin: 12px 0 !important;
+  }
+  
+  /* Qty + Add to cart - sticky bottom */
+  .tz-product-sticky-bar {
+    position: fixed;
+    bottom: var(--tz-nav-h);
+    left: 0; right: 0;
+    background: var(--tz-surface);
+    padding: 12px 16px 14px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    border-top: 1px solid rgba(255,255,255,.08);
+    z-index: 900;
+    box-shadow: 0 -4px 16px rgba(0,0,0,.3);
+  }
+  
+  /* Qty selector */
+  .tz-qty-wrap {
+    display: flex;
+    align-items: center;
+    background: var(--tz-card);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,.1);
+  }
+  .tz-qty-btn {
+    background: none;
+    border: none;
+    color: var(--tz-accent);
+    font-size: 20px;
+    width: 38px; height: 42px;
+    cursor: pointer;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .tz-qty-val {
+    width: 36px;
+    text-align: center;
+    color: var(--tz-text);
+    font-weight: 700;
+    font-size: 15px;
+    background: none;
+    border: none;
+    outline: none;
+  }
+  
+  /* Add to cart button on product page */
+  #add_to_cart, 
+  .o_product_page .a-submit.btn-primary,
+  .tz-add-cart-btn {
+    flex: 1 !important;
+    background: var(--tz-accent) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 13px !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 16px rgba(233,69,96,.35) !important;
+  }
+  /* Hide old Odoo cart form at its default position; we rebuild it at sticky bar */
+  .o_product_page form#cart_items .row:last-child { margin-bottom: 80px !important; }
+}
+
+/* ── Cart Page ──────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .o_cart_container, 
+  #cart_total_table,
+  .o_cart_summary {
+    background: var(--tz-surface) !important;
+    border-radius: var(--tz-radius) !important;
+    margin: 12px 0 !important;
+    padding: 16px !important;
+    color: var(--tz-text) !important;
+  }
+  
+  /* Cart line items */
+  .td-product_name a { color: var(--tz-text) !important; font-weight: 600 !important; font-size: 13px !important; }
+  .td-price .oe_currency_value { color: var(--tz-accent) !important; font-weight: 700 !important; }
+  
+  /* Input qty in cart */
+  .o_website_sale input.js_quantity {
+    background: var(--tz-card) !important;
+    color: var(--tz-text) !important;
+    border: 1px solid rgba(255,255,255,.1) !important;
+    border-radius: 8px !important;
+    text-align: center !important;
+    width: 50px !important;
+    padding: 6px !important;
+  }
+  
+  /* Order total */
+  #cart_total .oe_currency_value {
+    color: var(--tz-accent) !important;
+    font-size: 20px !important;
+    font-weight: 900 !important;
+  }
+  
+  /* Checkout button */
+  a[href="/shop/checkout"],
+  .o_cart_summary .btn-primary,
+  .oe_cart .btn-primary {
+    background: var(--tz-accent) !important;
+    border: none !important;
+    border-radius: 12px !important;
+    color: #fff !important;
+    font-weight: 700 !important;
+    padding: 14px 28px !important;
+    width: 100% !important;
+    font-size: 15px !important;
+    display: block !important;
+    text-align: center !important;
+    box-shadow: 0 4px 16px rgba(233,69,96,.35) !important;
+    margin-top: 12px !important;
+  }
+  
+  /* Delete cart item */
+  .js_delete_product .fa-trash { color: var(--tz-accent) !important; }
+}
+
+/* ── Forms & Inputs ─────────────────────────────────────────────── */
+input, select, textarea, .form-control {
+  background: var(--tz-card) !important;
+  color: var(--tz-text) !important;
+  border: 1.5px solid rgba(255,255,255,.1) !important;
+  border-radius: 10px !important;
+}
+input:focus, select:focus, textarea:focus, .form-control:focus {
+  border-color: var(--tz-accent) !important;
+  box-shadow: 0 0 0 3px rgba(233,69,96,.15) !important;
+  background: var(--tz-card) !important;
+  color: var(--tz-text) !important;
+}
+label { color: var(--tz-muted) !important; font-size: 13px !important; }
+
+/* ── Buttons (global) ───────────────────────────────────────────── */
+.btn-primary, .btn.btn-primary {
+  background: var(--tz-accent) !important;
+  border-color: var(--tz-accent) !important;
+  color: #fff !important;
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+}
+.btn-secondary {
+  background: var(--tz-card) !important;
+  border-color: rgba(255,255,255,.12) !important;
+  color: var(--tz-text) !important;
+  border-radius: 10px !important;
+}
+.btn:active { transform: scale(.97); }
+
+/* ── Cards / Panels ─────────────────────────────────────────────── */
+.card, .o_panel, .card-body {
+  background: var(--tz-card) !important;
+  border: 1px solid rgba(255,255,255,.06) !important;
+  border-radius: var(--tz-radius) !important;
+  color: var(--tz-text) !important;
+}
+.card-header {
+  background: var(--tz-card2) !important;
+  color: var(--tz-text) !important;
+  border-bottom: 1px solid rgba(255,255,255,.08) !important;
+}
+
+/* ── Login / Signup Page ────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .oe_login_form, .oe_signup_form, .oe_reset_password_form {
+    background: var(--tz-surface) !important;
+    border-radius: 20px !important;
+    padding: 28px 20px !important;
+    margin: 20px 16px !important;
+    box-shadow: 0 8px 40px rgba(0,0,0,.4) !important;
+  }
+  .oe_login_form .o_login_wrap h3,
+  .oe_signup_form h3 {
+    color: var(--tz-text) !important;
+    font-weight: 800 !important;
+    font-size: 22px !important;
+    text-align: center !important;
+  }
+  /* TeZz logo on login */
+  .tz-login-logo {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .tz-login-logo span:first-child { color: var(--tz-text); font-size: 32px; font-weight: 800; }
+  .tz-login-logo span:last-child  { color: var(--tz-accent); font-size: 32px; font-weight: 900; }
+}
+
+/* ── Account / My Account ───────────────────────────────────────── */
+@media (max-width: 768px) {
+  .o_portal_wrap {
+    background: var(--tz-bg) !important;
+    color: var(--tz-text) !important;
+  }
+  .o_portal_wrap .container {
+    padding: 0 12px !important;
+  }
+  /* Portal sidebar nav */
+  .o_portal_sidebar .nav-pills .nav-link {
+    color: var(--tz-muted) !important;
+    border-radius: 10px !important;
+    margin-bottom: 4px !important;
+  }
+  .o_portal_sidebar .nav-pills .nav-link.active {
+    background: var(--tz-accent) !important;
+    color: #fff !important;
+  }
+  /* Order table in account */
+  .table { color: var(--tz-text) !important; }
+  .table th { color: var(--tz-muted) !important; font-size: 12px !important; text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,.08) !important; }
+  .table td { border-bottom: 1px solid rgba(255,255,255,.05) !important; font-size: 13px !important; }
+  .table-striped > tbody > tr:nth-of-type(odd) > * { background: rgba(255,255,255,.03) !important; }
+}
+
+/* ── Alerts / Flash Messages ────────────────────────────────────── */
+.alert-success { background: rgba(0,200,83,.15) !important; color: var(--tz-success) !important; border-color: rgba(0,200,83,.3) !important; }
+.alert-danger  { background: rgba(233,69,96,.15) !important; color: #ff6b6b !important; border-color: rgba(233,69,96,.3) !important; }
+.alert-info    { background: rgba(245,166,35,.12) !important; color: var(--tz-gold) !important; border-color: rgba(245,166,35,.3) !important; }
+
+/* ── Breadcrumb ─────────────────────────────────────────────────── */
+.breadcrumb { background: transparent !important; }
+.breadcrumb-item a { color: var(--tz-accent) !important; font-size: 12px !important; }
+.breadcrumb-item.active { color: var(--tz-muted) !important; font-size: 12px !important; }
+.breadcrumb-item + .breadcrumb-item::before { color: var(--tz-muted) !important; }
+
+/* ── Pagination ─────────────────────────────────────────────────── */
+.page-item .page-link {
+  background: var(--tz-card) !important;
+  border-color: rgba(255,255,255,.08) !important;
+  color: var(--tz-text) !important;
+  border-radius: 8px !important;
+  margin: 0 3px !important;
+}
+.page-item.active .page-link {
+  background: var(--tz-accent) !important;
+  border-color: var(--tz-accent) !important;
+  color: #fff !important;
+}
+
+/* ── Marketplace Seller Cards ───────────────────────────────────── */
+@media (max-width: 768px) {
+  .mp_seller_card, .seller-box {
+    background: var(--tz-card) !important;
+    border-radius: var(--tz-radius) !important;
+    border: 1px solid rgba(255,255,255,.06) !important;
+    overflow: hidden !important;
+  }
+  .mp_seller_card .seller-name a {
+    color: var(--tz-text) !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+  }
+}
+
+/* ── Toast Notifications ────────────────────────────────────────── */
+.tz-toast {
+  position: fixed;
+  bottom: calc(var(--tz-nav-h) + 16px);
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--tz-card2);
+  color: var(--tz-text);
+  padding: 12px 20px;
+  border-radius: 40px;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 4px 20px rgba(0,0,0,.4);
+  z-index: 2000;
+  border-left: 3px solid var(--tz-accent);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s, transform .3s;
+  white-space: nowrap;
+}
+.tz-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── Pull-to-refresh indicator ──────────────────────────────────── */
+.tz-ptr {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--tz-accent), var(--tz-gold));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .3s;
+  z-index: 1100;
+}
+.tz-ptr.loading { animation: ptr-anim 1s ease-in-out infinite; }
+@keyframes ptr-anim { 0%{transform:scaleX(0)} 50%{transform:scaleX(.7)} 100%{transform:scaleX(0)} }
+
+/* ── Scrollbar ──────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(233,69,96,.4); border-radius: 4px; }
+
+/* ── Links global ───────────────────────────────────────────────── */
+a { color: var(--tz-text) !important; }
+a:hover { color: var(--tz-accent) !important; }
+
+/* ── Tables (dark) ──────────────────────────────────────────────── */
+table { color: var(--tz-text) !important; }
+.table-bordered td, .table-bordered th { border-color: rgba(255,255,255,.08) !important; }
+
+/* ── Modal (dark) ───────────────────────────────────────────────── */
+.modal-content {
+  background: var(--tz-surface) !important;
+  color: var(--tz-text) !important;
+  border-radius: 20px !important;
+  border: 1px solid rgba(255,255,255,.08) !important;
+}
+.modal-header {
+  background: var(--tz-card) !important;
+  border-bottom: 1px solid rgba(255,255,255,.08) !important;
+  border-radius: 20px 20px 0 0 !important;
+}
+.modal-footer { border-top: 1px solid rgba(255,255,255,.08) !important; }
+.btn-close { filter: invert(1); }
+
+/* ── Checkout Steps ─────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .o_checkout_progress { 
+    background: var(--tz-surface) !important;
+    padding: 12px 16px !important;
+    border-bottom: 1px solid rgba(255,255,255,.06) !important;
+  }
+  .o_checkout_progress li { 
+    color: var(--tz-muted) !important;
+    font-size: 11px !important;
+  }
+  .o_checkout_progress li.active { color: var(--tz-accent) !important; }
+  .o_checkout_progress li.done { color: var(--tz-success) !important; }
+}
+
+/* ── Loading Spinner ────────────────────────────────────────────── */
+.tz-loading {
+  display: inline-block;
+  width: 18px; height: 18px;
+  border: 2px solid rgba(233,69,96,.3);
+  border-top-color: var(--tz-accent);
+  border-radius: 50%;
+  animation: spin .6s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Make Odoo loading use our colors */
+.o_loading { display: none !important; }
+.tz-ptr.loading { display: block; }
+
+/* ── Responsive tweaks ──────────────────────────────────────────── */
+@media (min-width: 769px) {
+  /* On desktop – keep things mostly standard, just apply dark colours */
+  body { background: var(--tz-bg) !important; }
+  #tz-bottom-nav { display: none !important; }
+  body { padding-bottom: 0 !important; }
+  .navbar-brand::before, .navbar-brand::after { display: none; }
+  .navbar-brand img { display: block !important; }
+}
