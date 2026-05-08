@@ -1,0 +1,3 @@
+# Placeholder — drop your TLS certificate and key here as
+# `fullchain.pem` and `privkey.pem`. This directory is mounted into
+# the nginx container at /etc/nginx/ssl.

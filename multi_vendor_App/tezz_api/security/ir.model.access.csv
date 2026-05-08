@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_tezz_refresh_token_admin,tezz.refresh_token admin,model_tezz_refresh_token,base.group_system,1,1,1,1
+access_tezz_otp_admin,tezz.otp admin,model_tezz_otp,base.group_system,1,1,1,1
+access_tezz_device_user,tezz.device user,model_tezz_device,base.group_user,1,1,1,1
+access_tezz_device_admin,tezz.device admin,model_tezz_device,base.group_system,1,1,1,1
+access_tezz_rate_limit_admin,tezz.rate_limit admin,model_tezz_rate_limit,base.group_system,1,1,1,1

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- JWT issuer name (signing secret is generated lazily on first use). -->
+        <record id="param_jwt_issuer" model="ir.config_parameter">
+            <field name="key">tezz_api.jwt_issuer</field>
+            <field name="value">tezz-api</field>
+        </record>
+        <record id="param_access_ttl" model="ir.config_parameter">
+            <field name="key">tezz_api.access_ttl</field>
+            <field name="value">1800</field>
+        </record>
+        <record id="param_refresh_ttl" model="ir.config_parameter">
+            <field name="key">tezz_api.refresh_ttl</field>
+            <field name="value">2592000</field>
+        </record>
+        <!-- Default rate limits — endpoint controllers may override. -->
+        <record id="param_rl_login" model="ir.config_parameter">
+            <field name="key">tezz_api.rl.login.per_minute</field>
+            <field name="value">10</field>
+        </record>
+        <record id="param_rl_signup" model="ir.config_parameter">
+            <field name="key">tezz_api.rl.signup.per_hour</field>
+            <field name="value">5</field>
+        </record>
+        <record id="param_rl_otp" model="ir.config_parameter">
+            <field name="key">tezz_api.rl.otp.per_hour</field>
+            <field name="value">5</field>
+        </record>
+    </data>
+</odoo>

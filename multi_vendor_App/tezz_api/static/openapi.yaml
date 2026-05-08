@@ -1,0 +1,217 @@
+openapi: 3.0.3
+info:
+  title: TezZ API
+  version: "1.0.0"
+  description: |
+    Versioned JSON REST surface that backs the TezZ Flutter customer and
+    vendor apps. All responses follow the envelope `{data, error, meta}`.
+servers:
+  - url: http://localhost:8069
+    description: Local Odoo dev server
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Envelope:
+      type: object
+      required: [data, error, meta]
+      properties:
+        data: { nullable: true }
+        error:
+          nullable: true
+          type: object
+          properties:
+            code: { type: string }
+            message: { type: string }
+            details: { nullable: true }
+        meta:
+          type: object
+          properties:
+            request_id: { type: string }
+            ts: { type: integer }
+    TokenPair:
+      type: object
+      properties:
+        token_type: { type: string, example: Bearer }
+        access_token: { type: string }
+        access_expires_at: { type: integer }
+        refresh_token: { type: string }
+        refresh_expires_at: { type: integer }
+        user:
+          type: object
+          properties:
+            id: { type: integer }
+            name: { type: string }
+            email: { type: string }
+            phone: { type: string, nullable: true }
+            role: { type: string, enum: [customer, vendor, admin] }
+security:
+  - bearerAuth: []
+paths:
+  /api/v1/health:
+    get:
+      summary: Service health probe
+      security: []
+      responses:
+        "200": { description: ok }
+  /api/v1/version:
+    get:
+      summary: API version
+      security: []
+      responses:
+        "200": { description: ok }
+  /api/v1/auth/signup:
+    post:
+      summary: Register a new customer
+      security: []
+      responses: { "201": { description: token pair } }
+  /api/v1/auth/login:
+    post:
+      summary: Exchange credentials for token pair
+      security: []
+      responses: { "200": { description: token pair } }
+  /api/v1/auth/refresh:
+    post:
+      summary: Rotate refresh token
+      security: []
+      responses: { "200": { description: token pair } }
+  /api/v1/auth/logout:
+    post:
+      summary: Revoke a refresh token
+      security: []
+      responses: { "200": { description: ok } }
+  /api/v1/auth/forgot:
+    post:
+      summary: Request password-reset OTP
+      security: []
+      responses: { "200": { description: ok } }
+  /api/v1/auth/reset:
+    post:
+      summary: Submit OTP + new password
+      security: []
+      responses: { "200": { description: ok } }
+  /api/v1/auth/otp/request:
+    post:
+      summary: Issue an OTP
+      security: []
+      responses: { "200": { description: ok } }
+  /api/v1/auth/otp/verify:
+    post:
+      summary: Verify an OTP
+      security: []
+      responses: { "200": { description: ok } }
+  /api/v1/auth/oauth/{provider}:
+    post:
+      summary: Social login (google|facebook|apple)
+      security: []
+      parameters:
+        - in: path
+          name: provider
+          required: true
+          schema: { type: string, enum: [google, facebook, apple] }
+      responses: { "200": { description: token pair } }
+  /api/v1/home:
+    get: { summary: Home payload, security: [], responses: { "200": { description: ok } } }
+  /api/v1/categories:
+    get: { summary: List categories, security: [], responses: { "200": { description: ok } } }
+  /api/v1/products:
+    get: { summary: List products, security: [], responses: { "200": { description: ok } } }
+  /api/v1/products/{product_id}:
+    get:
+      summary: Product detail
+      security: []
+      parameters: [ { in: path, name: product_id, required: true, schema: { type: integer } } ]
+      responses: { "200": { description: ok }, "404": { description: not found } }
+  /api/v1/products/search:
+    get: { summary: Search products, security: [], responses: { "200": { description: ok } } }
+  /api/v1/cart:
+    get: { summary: Get current cart, responses: { "200": { description: ok } } }
+  /api/v1/cart/items:
+    post: { summary: Add cart line, responses: { "200": { description: ok } } }
+  /api/v1/cart/items/{line_id}:
+    patch:
+      summary: Update line qty
+      parameters: [ { in: path, name: line_id, required: true, schema: { type: integer } } ]
+      responses: { "200": { description: ok } }
+    delete:
+      summary: Remove cart line
+      parameters: [ { in: path, name: line_id, required: true, schema: { type: integer } } ]
+      responses: { "200": { description: ok } }
+  /api/v1/checkout/quote:
+    get: { summary: Checkout quote, responses: { "200": { description: ok } } }
+  /api/v1/checkout/place:
+    post: { summary: Place order, responses: { "201": { description: ok } } }
+  /api/v1/orders:
+    get: { summary: List orders, responses: { "200": { description: ok } } }
+  /api/v1/orders/{order_id}:
+    get:
+      summary: Order detail
+      parameters: [ { in: path, name: order_id, required: true, schema: { type: integer } } ]
+      responses: { "200": { description: ok } }
+  /api/v1/orders/{order_id}/track:
+    get:
+      summary: Track order
+      parameters: [ { in: path, name: order_id, required: true, schema: { type: integer } } ]
+      responses: { "200": { description: ok } }
+  /api/v1/orders/{order_id}/cancel:
+    post:
+      summary: Cancel order
+      parameters: [ { in: path, name: order_id, required: true, schema: { type: integer } } ]
+      responses: { "200": { description: ok } }
+  /api/v1/me:
+    get: { summary: Current user, responses: { "200": { description: ok } } }
+  /api/v1/me/addresses:
+    get: { summary: List addresses, responses: { "200": { description: ok } } }
+    post: { summary: Create address, responses: { "201": { description: ok } } }
+  /api/v1/me/addresses/{address_id}:
+    delete:
+      summary: Delete address
+      parameters: [ { in: path, name: address_id, required: true, schema: { type: integer } } ]
+      responses: { "200": { description: ok } }
+  /api/v1/me/wishlist:
+    get: { summary: Wishlist, responses: { "200": { description: ok } } }
+  /api/v1/me/wishlist/{product_id}:
+    post:
+      summary: Add wishlist item
+      parameters: [ { in: path, name: product_id, required: true, schema: { type: integer } } ]
+      responses: { "200": { description: ok } }
+    delete:
+      summary: Remove wishlist item
+      parameters: [ { in: path, name: product_id, required: true, schema: { type: integer } } ]
+      responses: { "200": { description: ok } }
+  /api/v1/vendor/dashboard:
+    get: { summary: Vendor KPIs, responses: { "200": { description: ok } } }
+  /api/v1/vendor/products:
+    get: { summary: Vendor products, responses: { "200": { description: ok } } }
+    post: { summary: Create product, responses: { "201": { description: ok } } }
+  /api/v1/vendor/products/{product_id}:
+    patch:
+      summary: Update product
+      parameters: [ { in: path, name: product_id, required: true, schema: { type: integer } } ]
+      responses: { "200": { description: ok } }
+    delete:
+      summary: Soft-delete product
+      parameters: [ { in: path, name: product_id, required: true, schema: { type: integer } } ]
+      responses: { "200": { description: ok } }
+  /api/v1/vendor/orders:
+    get: { summary: Vendor orders, responses: { "200": { description: ok } } }
+  /api/v1/vendor/wallet:
+    get: { summary: Vendor wallet balance, responses: { "200": { description: ok } } }
+  /api/v1/payments/intents:
+    post: { summary: Create payment intent, responses: { "201": { description: ok } } }
+  /api/v1/payments/webhooks/{provider}:
+    post:
+      summary: Provider webhook
+      security: []
+      parameters: [ { in: path, name: provider, required: true, schema: { type: string } } ]
+      responses: { "200": { description: ok } }
+  /api/v1/devices:
+    post: { summary: Register a push device, responses: { "200": { description: ok } } }
+  /api/v1/devices/{push_token}:
+    delete:
+      summary: Unregister a push device
+      parameters: [ { in: path, name: push_token, required: true, schema: { type: string } } ]
+      responses: { "200": { description: ok } }

@@ -7,6 +7,8 @@ RUN pip3 install --no-cache-dir \
     "cryptography==41.0.7" \
     "pyOpenSSL==23.3.0" \
     "urllib3==1.26.18" \
+    "pyjwt==2.8.0" \
+    "redis==5.0.1" \
     firebase-admin \
     pyfcm
 
